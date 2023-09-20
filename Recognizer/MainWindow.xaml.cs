@@ -26,6 +26,7 @@ namespace Recognizer
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		public static MainWindow _window;
 		static Dictionary<string, string> SigStrings = new Dictionary<string, string>()
 		{
 			{ "PDF", "25-50-44-46-2D"},
@@ -42,6 +43,7 @@ namespace Recognizer
 		{
 			InitializeComponent();
 			//_ = new Logics(this);
+			_window = this;
 		}
 
 		private void StackPanel_Drop(object sender, DragEventArgs e)
@@ -126,12 +128,27 @@ namespace Recognizer
 
 		private void MinWindow_Click(object sender, RoutedEventArgs e)
 		{
-			Application.Current.MainWindow.WindowState = WindowState.Minimized;
+			if ((bool)CheckTray.IsChecked) 
+			{
+				this.Hide();
+			} 
+			else
+			{
+				Application.Current.MainWindow.WindowState = WindowState.Minimized;
+			}
 		}
 
 		private void TaskbarIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
 		{
 			this.Show();
+		}
+
+		private void Drag(object sender, MouseButtonEventArgs e)
+		{
+			if (Mouse.LeftButton == MouseButtonState.Pressed)
+			{
+				MainWindow._window.DragMove();
+			}
 		}
 	}
 }
